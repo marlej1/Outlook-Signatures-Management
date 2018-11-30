@@ -57,7 +57,7 @@ namespace Outlook_Signatures_Management.Controllers
                 try
                 {
                     context.Employees.Add(model);
-                    context.SaveChanges();
+                   // context.SaveChanges();
                     // TODO: Add insert logic here
 
                     return RedirectToAction("Index");
