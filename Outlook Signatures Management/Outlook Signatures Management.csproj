@@ -214,6 +214,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Employee\Create.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\Shared\_EmployeeList.cshtml" />
+    <Content Include="Views\Employee\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811282240586_init.resx">

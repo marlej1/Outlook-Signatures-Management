@@ -20,9 +20,7 @@ namespace Outlook_Signatures_Management.Controllers
                 employees = context.Employees.Include(e=>e.Department).ToList();
 
             }
-
-
-            return View(employees);
+            return PartialView("_EmployeeList", employees);
         }
 
         // GET: Employee/Details/5
@@ -72,47 +70,97 @@ namespace Outlook_Signatures_Management.Controllers
         }
 
         // GET: Employee/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int employeeId)
         {
-            return View();
+            List<Department> departments;
+   
+            Employee empl;
+
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+            
+
+                try
+                {
+                    empl = context.Employees.Find(employeeId);
+                    departments = context.Departments.ToList();
+                    ViewBag.DeparmentList = new SelectList(departments, "DepartmentId", "DepartmentName");
+                    if (empl != null)
+                    {
+                        return PartialView("_Edit", empl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Create");
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                
+
+            }
+           
+
+
         }
 
         // POST: Employee/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
+        //[HttpPost]
+        //public ActionResult Edit(int id, FormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add update logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
-        // GET: Employee/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
+        //// GET: Employee/Delete/5
+        //public ActionResult Delete(int id)
+        //{
+        //    return View();
+        //}
+            
         // POST: Employee/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int employeeId)
         {
-            try
-            {
-                // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
+            Employee employee;
+            using (ApplicationDbContext context = new ApplicationDbContext())
             {
-                return View();
+                try
+                {
+
+                    employee = context.Employees.Find(employeeId);
+                    if (employee != null)
+                    {
+                        context.Employees.Remove(employee);
+                       // context.SaveChanges();
+                        return Json(employee, JsonRequestBehavior.AllowGet);
+
+                    }
+                    else
+                    {
+                        return RedirectToAction("Create");
+                    }
+                    
+                }
+                catch
+                {
+                    return View();
+                }
             }
+
+          
         }
     }
 }
