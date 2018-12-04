@@ -55,10 +55,10 @@ namespace Outlook_Signatures_Management.Controllers
                 try
                 {
                     context.Employees.Add(model);
-                   // context.SaveChanges();
+                   context.SaveChanges();
                     // TODO: Add insert logic here
-
-                    return RedirectToAction("Index");
+                    
+                    return Json(model);
                 }
                 catch(Exception ex)
                 {
@@ -108,27 +108,63 @@ namespace Outlook_Signatures_Management.Controllers
         }
 
         // POST: Employee/Edit/5
-        //[HttpPost]
-        //public ActionResult Edit(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
+        [HttpPost]
+        public ActionResult Edit(Employee model)
+        {
 
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            Employee emp;
+            List<Department> departments;
 
-        //// GET: Employee/Delete/5
+            try
+            {
+            
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    emp = context.Employees.Find(model.EmployeeId);
+                    departments = context.Departments.ToList();
+                    ViewBag.DeparmentList = new SelectList(departments, "DepartmentId", "DepartmentName");
+
+
+                    if (emp != null)
+                    {
+                        emp.City = model.City;
+                        emp.Company = model.Company;
+                        emp.DepartmentId = model.DepartmentId;
+                        emp.DisplayName = model.DisplayName;
+                        emp.Email = model.Email;
+                        emp.FaxNumber = model.FaxNumber;
+                        emp.FirstName = model.FirstName;
+                        emp.JobTitle = model.JobTitle;
+                        emp.LastName = model.LastName;
+                        emp.PhoneNumber = model.PhoneNumber;
+                        emp.State = model.State;
+                        emp.Street = model.Street;
+                        emp.WebSite = model.WebSite;
+                        emp.Zip = model.Zip;
+                        context.SaveChanges();
+                      
+                    }
+
+
+                    return Json(emp);
+                   
+                }
+                  
+
+                  
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Employee/Delete/5
         //public ActionResult Delete(int id)
         //{
         //    return View();
         //}
-            
+
         // POST: Employee/Delete/5
         [HttpPost]
         public ActionResult Delete(int employeeId)
