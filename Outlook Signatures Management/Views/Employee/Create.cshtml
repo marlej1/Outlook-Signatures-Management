@@ -161,6 +161,9 @@
     </div>
     @Html.Action("Index");
 
+
+
+
     <div class="modal fade" id="ShowEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -248,14 +251,14 @@
                         url: "/Employee/Create",
                         success: function (response) {
 
-                            var ThitdRd = "<td> <div class='btn-group'><button class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"fas fa-cogs\"></i></button>\<ul class=\"dropdown-menu\"><li><a data-toggle=\"modal\" onclick=\"OpenEmployeeDetails(" + response.EmployeeId + ")\" href=\"#\">Open</a></li><li><a href=\"#\">Copy</a></li><li><a href=\"#\" data - toggle=\"modal\" data - target=\"#confirmModal\" id = \"showConfirmDeleteBtn\" onclick = \"showConfirmDeleteModal(" + response.EmployeeId + ")\" > Delete</a ></li ></ul> </div></td>"
+                            var ThirdRd = "<td> <div class='btn-group'><button class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"fas fa-cog\"></i></button>\<ul class=\"dropdown-menu\"><li><a data-toggle=\"modal\" onclick=\"OpenEmployeeDetails(" + response.EmployeeId + ")\" href=\"#\">Open</a></li><li><a href=\"#\">Copy</a></li><li><a href=\"#\" data - toggle=\"modal\" data - target=\"#confirmModal\" id = \"showConfirmDeleteBtn\" onclick = \"showConfirmDeleteModal(" + response.EmployeeId + ")\" > Delete</a ></li ></ul> </div></td>"
 
-                            $('#EmployeeTable').append("<tr><td>" + response.DisplayName + "</td><td>" + response.Email + "</td>" + ThitdRd + "</tr>");
+                            $('#EmployeeTable').append("<tr><td>" + response.DisplayName + "</td><td>" + response.Email + "</td>" + ThirdRd + "</tr>");
                             $("#createEmployeeModal").modal("hide");
 
                         }
                     }
-
+                    
                 )
 
                     

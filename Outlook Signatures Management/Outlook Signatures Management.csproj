@@ -150,6 +150,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SignatureController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -164,6 +165,14 @@
     <Compile Include="Migrations\201811291912469_ChangeTheDataTypeForEmployeeLastNameColumn1.cs" />
     <Compile Include="Migrations\201811291912469_ChangeTheDataTypeForEmployeeLastNameColumn1.Designer.cs">
       <DependentUpon>201811291912469_ChangeTheDataTypeForEmployeeLastNameColumn1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812122012432_AddSignaturesTable.cs" />
+    <Compile Include="Migrations\201812122012432_AddSignaturesTable.Designer.cs">
+      <DependentUpon>201812122012432_AddSignaturesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812122021174_AddBodyColumn.cs" />
+    <Compile Include="Migrations\201812122021174_AddBodyColumn.Designer.cs">
+      <DependentUpon>201812122021174_AddBodyColumn.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -216,6 +225,8 @@
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Shared\_EmployeeList.cshtml" />
     <Content Include="Views\Employee\_Edit.cshtml" />
+    <Content Include="Views\Signature\Index.cshtml" />
+    <Content Include="Views\Signature\_Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811282240586_init.resx">
@@ -226,6 +237,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811291912469_ChangeTheDataTypeForEmployeeLastNameColumn1.resx">
       <DependentUpon>201811291912469_ChangeTheDataTypeForEmployeeLastNameColumn1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812122012432_AddSignaturesTable.resx">
+      <DependentUpon>201812122012432_AddSignaturesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812122021174_AddBodyColumn.resx">
+      <DependentUpon>201812122021174_AddBodyColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

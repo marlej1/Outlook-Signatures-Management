@@ -11,6 +11,7 @@ namespace Outlook_Signatures_Management.Controllers
     public class EmployeeController : Controller
     {
         // GET: Employee
+        [ChildActionOnly]
         public ActionResult Index()
         {
             List<Employee> employees;
