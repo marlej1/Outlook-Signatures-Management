@@ -50,8 +50,8 @@
 </div>
 
 
-<div class="modal fade" id="DesignSignatureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="DesignSignatureModal" role="dialog">
+    <div class="modal-dialog modal-ku" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Create new signature</h3>
@@ -65,32 +65,35 @@
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
 
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
 
     <script>
+        let editor = CKEDITOR.replace('Body');
+        
+        
         $('#submitbtn').on('click', function () {
-            var formData = $('#SignatureCreateForm').serialize();
+
+            var body = editor.getData();
+            var formData = $('#SignatureCreateForm').serializeArray();
+            formData[4].value = body;
             $.ajax(
                 {
                     type: "POST",
                     data: formData,
                     url: "/Signature/Create",
                     success: function (response) {
-
-                        //var ThirdRd = "<td> <div class='btn-group'><button class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"fas fa-cog\"></i></button>\<ul class=\"dropdown-menu\"><li><a data-toggle=\"modal\" onclick=\"OpenEmployeeDetails(" + response.EmployeeId + ")\" href=\"#\">Open</a></li><li><a href=\"#\">Copy</a></li><li><a href=\"#\" data - toggle=\"modal\" data - target=\"#confirmModal\" id = \"showConfirmDeleteBtn\" onclick = \"showConfirmDeleteModal(" + response.EmployeeId + ")\" > Delete</a ></li ></ul> </div></td>"
-
-                        //$('#EmployeeTable').append("<tr><td>" + response.DisplayName + "</td><td>" + response.Email + "</td>" + ThirdRd + "</tr>");
+                        alert(response.Body);
                         $("#DesignSignatureModal").modal("hide");
-
                     }
                 }
-
             )
-
-
         })
     </script>
+
+
 }
 
