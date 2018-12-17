@@ -21,21 +21,22 @@
                 </button>
                 @Html.ActionLink("MY Signature Tool", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Signatures", "Index", "Signature")</li>
                     <li>@Html.ActionLink("Employees", "Create", "Employee")</li>
-                    <li>@Html.ActionLink("Campaigns", "Index", "Campaing")</li>
+                    <li>@Html.ActionLink("Campaigns", "Index", "Campaign")</li>
                 </ul>
             </div>
+
         </div>
     </div>
-    <div class="container body-content">
+
+    <div class="container-fluid body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+      
+      
     </div>
 
   

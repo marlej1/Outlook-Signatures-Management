@@ -148,6 +148,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CampaignController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SignatureController.cs" />
@@ -173,6 +174,10 @@
     <Compile Include="Migrations\201812122021174_AddBodyColumn.cs" />
     <Compile Include="Migrations\201812122021174_AddBodyColumn.Designer.cs">
       <DependentUpon>201812122021174_AddBodyColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812151647488_AddCampaignTable.cs" />
+    <Compile Include="Migrations\201812151647488_AddCampaignTable.Designer.cs">
+      <DependentUpon>201812151647488_AddCampaignTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -575,6 +580,10 @@
     <Content Include="Views\Employee\_Edit.cshtml" />
     <Content Include="Views\Signature\Index.cshtml" />
     <Content Include="Views\Signature\_Create.cshtml" />
+    <Content Include="Views\Signature\_Edit.cshtml" />
+    <Content Include="Views\Campaign\Index.cshtml" />
+    <Content Include="Views\Campaign\_Create.cshtml" />
+    <Content Include="Views\Campaign\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811282240586_init.resx">
@@ -591,6 +600,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812122021174_AddBodyColumn.resx">
       <DependentUpon>201812122021174_AddBodyColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812151647488_AddCampaignTable.resx">
+      <DependentUpon>201812151647488_AddCampaignTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

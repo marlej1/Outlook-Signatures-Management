@@ -10,6 +10,7 @@ namespace Outlook_Signatures_Management.Models
     {
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Campaign> Campaigns { get; set; }
 
         public DbSet<Signature> Signatures { get; set; }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Outlook_Signatures_Management.Models
 {
@@ -9,6 +10,7 @@ namespace Outlook_Signatures_Management.Models
     {
         public int CampaignId { get; set; }
         public string CampaignName { get; set; }
+        [AllowHtml]
         public string Content { get; set; }
         public string SideNotes { get; set; }
         public bool Enabled { get; set; }

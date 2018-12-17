@@ -1,99 +1,221 @@
 ﻿@model IEnumerable<Outlook_Signatures_Management.Models.Signature>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Signatures Index";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-xs-11"></div>
-        <div class="col-xs-1">
-            <div class="btn-group">
+
+    <div class="row-fluid">
+        <div class="col-xs-10"></div>
+        <div class="col-xs-2" >
+            <div class="btn-group" >
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-top:20px" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></button>
-                <ul class="dropdown-menu">
-                    <li><a data-toggle="modal" data-target="#DesignSignatureModal" href="#">Design a new signature</a></li>
+                <ul class="dropdown-menu" >
+                    <li ><a style="margin-right:2px" data-toggle="modal" data-target="#DesignSignatureModal" href="#">Design a new signature</a></li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <table id="SignaturesTable">
+    <div class="row-fluid">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-9">
+            <table id="SignaturesTable" class="table table-responsive">
 
 
-        @foreach (var item in Model)
-        {
-            <tr id="row_@item.SignatureId">
+                @foreach (var item in Model)
+            {
+                <tr id="row_@item.SignatureId">
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.SignatureName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsDefault)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsForwardReply)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SignatureName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsDefault)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsForwardReply)
+                    </td>
 
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>
-                        <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" onclick="OpenEmployeeDetails(@item.SignatureId)" href="#">Open</a></li>
-                            <li><a href="#">Copy</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#confirmModal" id="showConfirmDeleteBtn" onclick="showConfirmDeleteModal(@item.SignatureId)">Delete</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>
+                            <ul class="dropdown-menu">
+                                <li><a data-toggle="modal" onclick="OpenSignatureDetails(@item.SignatureId)" href="#">Open</a></li>
+                                <li><a href="#">Copy</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#confirmModal" id="showConfirmDeleteBtn" onclick="showConfirmDeleteSignatureModal(@item.SignatureId)">Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+
         }
-    </table>
-</div>
-
-
-<div class="modal fade" id="DesignSignatureModal" role="dialog">
-    <div class="modal-dialog modal-ku" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Create new signature</h3>
-            </div>
-
-            @Html.Action("Create")
-
-
-
+            </table>
+            <input type="hidden" id="HiddenCamaignId" />
         </div>
-    </div>
-</div>
+        <div class="col-xs-1">
+        </div>
+        </div>
 
 
-@section Scripts {
 
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+        <div class="modal fade" id="DesignSignatureModal" role="dialog">
+            <div class="modal-dialog modal-ku" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Create new signature</h3>
+                    </div>
 
-    <script>
-        let editor = CKEDITOR.replace('Body');
-        
-        
-        $('#submitbtn').on('click', function () {
+                    @Html.Action("Create")
 
-            var body = editor.getData();
-            var formData = $('#SignatureCreateForm').serializeArray();
-            formData[4].value = body;
-            $.ajax(
-                {
-                    type: "POST",
-                    data: formData,
-                    url: "/Signature/Create",
-                    success: function (response) {
-                        alert(response.Body);
-                        $("#DesignSignatureModal").modal("hide");
-                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="EditSignatureModal" role="dialog">
+            <div class="modal-dialog modal-ku" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Edit signature</h3>
+                    </div>
+                    <div class="modal-body" id="EditSignatureModalBody">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="reset" value="Save Changes" id="SaveChangesbtn" class="btn btn-primary" />
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirmDeleteSignatureModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this Signature?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="deleteSignatureBtn">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @section Scripts {
+
+            @Scripts.Render("~/bundles/jqueryval")
+            <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+            <script>
+
+                let editor = CKEDITOR.replace('Body');
+                let editSignatureEditor;
+                // let editorEdit = CKEDITOR.replace('edit-body');
+
+                let OpenSignatureDetails = function (signatureId) {
+                   
+                    $.ajax(
+                        {
+                            type: "GET",
+                            data: { signatureId: signatureId },
+                            url: "/Signature/Edit",
+                            success: function (response) {
+                                $("#EditSignatureModalBody").html(response);
+                                let instance = CKEDITOR.instances["edit-body"];
+                                if (!instance) {
+                                    editSignatureEditor = CKEDITOR.replace('edit-body');
+                                } else {
+                                    instance.destroy(true);
+                                    editSignatureEditor = CKEDITOR.replace('edit-body');
+
+                                }
+                                $("#EditSignatureModal").modal("show");
+
+
+                            }
+                        }
+                    )
+
                 }
-            )
-        })
-    </script>
+
+                $('#SaveChangesbtn').on('click', function () {
+                    let body = editSignatureEditor.getData();
+                    var formData = $('#SignatureEditForm').serializeArray();
+                    formData[4].value = body;
+                    $.ajax(
+                        {
+                            type: "POST",
+                            data: formData,
+                            url: "/Signature/Edit",
+                            success: function (response) {
+                                $("#EditSignatureModal").modal("hide");
+                                $("#row_" + response.SignatureId + " td:nth-child(1)").html(response.SignatureName);
+                            }
+                        }
+                    )
+
+                })
 
 
-}
+                $('#submitbtn').on('click', function () {
+
+                    var body = editor.getData();
+                    var formData = $('#SignatureCreateForm').serializeArray();
+                    formData[4].value = body;
+                    $.ajax(
+                        {
+                            type: "POST",
+                            data: formData,
+                            url: "/Signature/Create",
+                            success: function (response) {
+                                $("#DesignSignatureModal").modal("hide");
+
+
+                                var ThirdRd = "<td> <div class='btn-group'><button class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"fas fa-cog\"></i></button>\<ul class=\"dropdown-menu\"><li><a data-toggle=\"modal\" onclick=\"OpenSignatureDetails(" + response.SignatureId + ")\" href=\"#\">Open</a></li><li><a href=\"#\">Copy</a></li><li><a href=\"#\" data - toggle=\"modal\" data - target=\"#confirmModal\" id = \"showConfirmDeleteBtn\" onclick = \"showConfirmDeleteSignatureModal(" + response.SignatureId + ")\" > Delete</a ></li ></ul> </div></td>"
+
+                                $('#SignaturesTable').append("<tr><td>" + response.SignatureName + "</td><td>" + response.IsDefault + "</td>" + "</td><td>" + response.IsForwardReply + "</td>" + ThirdRd + "</tr>");
+                            }
+                        }
+                    )
+                })
+
+
+                let showConfirmDeleteSignatureModal = function (signatureId) {
+                    $('#SignatureIdInput').val(signatureId);
+                    $("#confirmDeleteSignatureModal").modal("show");
+                }
+
+                $('#deleteSignatureBtn').on('click', function () {
+                    let id = $('#SignatureIdInput').val();
+
+                    $.ajax({
+                        type: "POST",
+                        data: { id: id },
+                        url: "/Signature/Delete",
+                        success: function () {
+                            $('#row_' + id).remove();
+                            $("#confirmDeleteSignatureModal").modal("hide");
+
+
+
+                        }
+                    })
+                }
+                )
+            </script>
+
+
+        }
 

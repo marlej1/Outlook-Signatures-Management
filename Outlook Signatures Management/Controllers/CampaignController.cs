@@ -7,45 +7,43 @@ using System.Web.Mvc;
 
 namespace Outlook_Signatures_Management.Controllers
 {
-    public class SignatureController : Controller
+    public class CampaignController : Controller
     {
-        
-        // GET: Signtature
+        // GET: Campaign
         public ActionResult Index()
         {
-            List<Signature> signatures;
+            List<Campaign> campaigns;
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
 
-                signatures = context.Signatures.ToList();
+                campaigns = context.Campaigns.ToList();
 
             }
-            return View(signatures);
+            return View(campaigns);
         }
 
-        // GET: Signtature/Details/5
+        // GET: Campaign/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Signtature/Create
-        [ChildActionOnly]
+        // GET: Campaign/Create
         public ActionResult Create()
         {
             return PartialView("_Create");
         }
 
-        // POST: Signtature/Create
+        // POST: Campaign/Create
         [HttpPost]
-        public ActionResult Create(Signature model)
+        public ActionResult Create(Campaign model)
         {
             model.DateAdded = DateTime.Now;
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
                 try
                 {
-                    context.Signatures.Add(model);
+                    context.Campaigns.Add(model);
                     context.SaveChanges();
                     // TODO: Add insert logic here
 
@@ -56,68 +54,69 @@ namespace Outlook_Signatures_Management.Controllers
                     return Content(ex.Message);
                 }
             }
+
+           
         }
 
-        // GET: Signtature/Edit/5
-        public ActionResult Edit(int signatureId)
+        // GET: Campaign/Edit/5
+        public ActionResult Edit(int campaignId)
         {
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
-                var signature = context.Signatures.Find(signatureId);
-                if (signature != null)
+                var campaign = context.Campaigns.Find(campaignId);
+                if (campaign != null)
                 {
-                    return PartialView("_Edit", signature);
+                    return PartialView("_Edit", campaign);
                 }
             }
             return HttpNotFound();
         }
 
-        // POST: Signtature/Edit/5
+        // POST: Campaign/Edit/5
         [HttpPost]
-        public ActionResult Edit(Signature model)
+        public ActionResult Edit(Campaign model)
         {
-            Signature sign; 
+            Campaign campaign;
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
 
 
-                sign = context.Signatures.Find(model.SignatureId);
-                if (sign != null)
+                campaign = context.Campaigns.Find(model.CampaignId);
+                if (campaign != null)
                 {
-                    sign.SignatureName = model.SignatureName;
-                    sign.Notes = model.Notes;
-                    sign.Body = model.Body;
-                    sign.IsDefault = model.IsDefault;
-                    sign.IsForwardReply = sign.IsForwardReply;
-                    sign.IsOptional = model.IsOptional;
+                    campaign.CampaignName = model.CampaignName;
+                    campaign.Content = model.Content;
+                    campaign.Enabled = model.Enabled;
+                    campaign.EndDate = model.EndDate;
+                    campaign.IsAlwaysActive = model.IsAlwaysActive;
+                    campaign.SideNotes = model.SideNotes;
+                    campaign.StartDate = model.StartDate;
+
                     context.SaveChanges();
 
-                    return Json(sign);
+                    return Json(campaign);
                 }
                 return HttpNotFound();
-                        
             }
-
-            
-          
-            
         }
 
-      
+       
+
+        // POST: Campaign/Delete/5
         [HttpPost]
         public ActionResult Delete(int id)
         {
             try
             {
-                Signature signature;
+                Campaign campaign;
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
-                    signature = db.Signatures.Find(id);
-                    if (signature!=null)
+                    campaign = db.Campaigns.Find(id);
+                    if (campaign != null)
                     {
-                        db.Signatures.Remove(signature);
+                        db.Campaigns.Remove(campaign);
                         db.SaveChanges();
-                        
+
                     }
                 }
                 // TODO: Add delete logic here
