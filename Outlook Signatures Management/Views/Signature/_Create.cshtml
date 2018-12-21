@@ -23,7 +23,7 @@
             @Html.LabelFor(model => model.IsForwardReply, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.IsForwardReply)
+                    @Html.CheckBoxFor(model => model.IsForwardReply, new { id = "ForwardReplyCheckBox"})
                     @Html.ValidationMessageFor(model => model.IsForwardReply, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -32,7 +32,7 @@
             @Html.LabelFor(model => model.IsDefault, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.IsDefault)
+                    @Html.CheckBoxFor(model => model.IsDefault)
                     @Html.ValidationMessageFor(model => model.IsDefault, "", new { @class = "text-danger" })
                 </div>
             </div>

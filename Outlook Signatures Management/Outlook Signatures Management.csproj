@@ -179,6 +179,10 @@
     <Compile Include="Migrations\201812151647488_AddCampaignTable.Designer.cs">
       <DependentUpon>201812151647488_AddCampaignTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812172023091_AddSignatureColumnsToEmployeeTable.cs" />
+    <Compile Include="Migrations\201812172023091_AddSignatureColumnsToEmployeeTable.Designer.cs">
+      <DependentUpon>201812172023091_AddSignatureColumnsToEmployeeTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Campaign.cs" />
@@ -603,6 +607,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812151647488_AddCampaignTable.resx">
       <DependentUpon>201812151647488_AddCampaignTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812172023091_AddSignatureColumnsToEmployeeTable.resx">
+      <DependentUpon>201812172023091_AddSignatureColumnsToEmployeeTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

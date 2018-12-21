@@ -19,6 +19,12 @@
             </div>
         </div>
     </div>
+    <div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-10">
+        @Html.Action("Index");
+        </div>
+    </div>
 
     <div class="modal fade" id="createEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -28,10 +34,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xs-7">
-                                @using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { id = "userForm" }))
-                                {
+                        @using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { id = "userForm" }))
+                        {
+                            <div class="row">
+                                <div class="col-xs-7">
+
+                                    <h3>Personal Details</h3>
+
                                     @Html.AntiForgeryToken()
 
                                     <div class="form-horizontal">
@@ -148,22 +157,26 @@
                                                 @Html.ValidationMessageFor(model => model.WebSite, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-
-
                                     </div>
-                                }
-                            </div>
+                                </div>
+                                <div class="col-xs-5">
+                                    <h3>Signatures</h3>
 
-                            <div class="col-xs-5">
-                                <select>
-                                    <option>Option 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
-                                </select>
+                                    <div class="form-group">
+                                        <label for="DefaultSignatureDropDown">Default Signature</label>
+                                        @Html.DropDownListFor(model => model.DefaultSignatureId, ViewBag.SignatureList as SelectList, "Empty Signature", new { id = "DefaultSignatureDropDown", style = "display:block;", @class = "form-control" })
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="DefaultSignatureDropDown">Forward/Reply Signature</label>
+                                        @Html.DropDownListFor(model => model.ForwardReplySignatureId, ViewBag.SignatureList as SelectList, "Empty Signature", new { id = "ForwardReplySignatureDropDown", style = "display:block;", @class = "form-control" })
+                                    </div>
+
+                                </div>
+
                             </div>
-                        </div>
+                        }
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -171,9 +184,14 @@
                 </div>
 
             </div>
+
+
         </div>
     </div>
-    @Html.Action("Index");
+</div>
+
+
+
 
 
 
@@ -257,6 +275,7 @@
 
             $('#submitbtn').on('click', function () {
                 var formData = $('#userForm').serialize();
+                
                 $.ajax(
                     {
                         type: "POST",

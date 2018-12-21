@@ -35,12 +35,16 @@ namespace Outlook_Signatures_Management.Controllers
         {
 
             List<Department> departments;
+            List<Signature> signatures;
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
                  departments = context.Departments.ToList();
+                signatures = context.Signatures.ToList();
+               
             }
 
             ViewBag.DeparmentList = new SelectList(departments, "DepartmentId", "DepartmentName");
+            ViewBag.SignatureList = new SelectList(signatures, "SignatureId", "SignatureName");
 
             return View();
         }
@@ -55,6 +59,15 @@ namespace Outlook_Signatures_Management.Controllers
             {
                 try
                 {
+                    if (model.DefaultSignatureId != null)
+                    {
+                        model.HasIndividualDefaultSignature = true;
+                    }
+                    if (model.ForwardReplySignatureId != null)
+                    {
+                        model.HasIndividualForwardReplySignature = true;
+                    }
+
                     context.Employees.Add(model);
                    context.SaveChanges();
                     // TODO: Add insert logic here
@@ -74,7 +87,9 @@ namespace Outlook_Signatures_Management.Controllers
         public ActionResult Edit(int employeeId)
         {
             List<Department> departments;
-   
+            List<Signature> signatures;
+
+
             Employee empl;
 
             using (ApplicationDbContext context = new ApplicationDbContext())
@@ -85,7 +100,11 @@ namespace Outlook_Signatures_Management.Controllers
                 {
                     empl = context.Employees.Find(employeeId);
                     departments = context.Departments.ToList();
+                    signatures = context.Signatures.ToList();
+
                     ViewBag.DeparmentList = new SelectList(departments, "DepartmentId", "DepartmentName");
+                    ViewBag.SignatureList = new SelectList(signatures, "SignatureId", "SignatureName");
+
                     if (empl != null)
                     {
                         return PartialView("_Edit", empl);
@@ -103,9 +122,7 @@ namespace Outlook_Signatures_Management.Controllers
                 
 
             }
-           
-
-
+         
         }
 
         // POST: Employee/Edit/5
@@ -128,6 +145,24 @@ namespace Outlook_Signatures_Management.Controllers
 
                     if (emp != null)
                     {
+                        if (model.DefaultSignatureId != null && model.DefaultSignatureId != emp.DefaultSignatureId)
+                        {
+                            model.HasIndividualDefaultSignature = true;
+                        }
+                        else if(model.DefaultSignatureId==null)
+                        {
+                            model.HasIndividualDefaultSignature = false;
+                        }
+
+                        if (model.ForwardReplySignatureId != null && model.ForwardReplySignatureId != emp.ForwardReplySignatureId)
+                        {
+                            model.HasIndividualForwardReplySignature = true;
+                        }
+                        else if(model.ForwardReplySignatureId == null)
+                        {
+                            model.HasIndividualForwardReplySignature = false;
+                        }
+
                         emp.City = model.City;
                         emp.Company = model.Company;
                         emp.DepartmentId = model.DepartmentId;
@@ -142,6 +177,10 @@ namespace Outlook_Signatures_Management.Controllers
                         emp.Street = model.Street;
                         emp.WebSite = model.WebSite;
                         emp.Zip = model.Zip;
+                        emp.DefaultSignatureId = model.DefaultSignatureId;
+                        emp.ForwardReplySignatureId = model.ForwardReplySignatureId;
+                        emp.HasIndividualDefaultSignature =    model.HasIndividualDefaultSignature;
+                        emp.HasIndividualForwardReplySignature = model.HasIndividualForwardReplySignature;
                         context.SaveChanges();
                       
                     }
@@ -160,11 +199,7 @@ namespace Outlook_Signatures_Management.Controllers
             }
         }
 
-        // GET: Employee/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
+       
 
         // POST: Employee/Delete/5
         [HttpPost]

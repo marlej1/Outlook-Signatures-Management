@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -21,6 +22,18 @@ namespace Outlook_Signatures_Management.Models
         public string Company { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
+
+        
+        public int? DefaultSignatureId { get; set; }
+        [ForeignKey("DefaultSignatureId")]
+        public Signature DefaultSignature { get; set; }
+
+        public int? ForwardReplySignatureId { get; set; }
+        [ForeignKey("ForwardReplySignatureId")]
+        public Signature ForwardReplySignature { get; set; }
+
+        public bool HasIndividualDefaultSignature { get; set; }
+        public bool HasIndividualForwardReplySignature { get; set; }
 
         public string State { get; set; }
         public string Zip { get; set; }

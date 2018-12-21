@@ -18,7 +18,7 @@
 <div class="row-fluid">
     <div class="col-xs-2"></div>
 
-    <div class="col-xs-9">
+    <div class="col-xs-10">
         <table class="table" id="CampaignTable">
 
 
@@ -27,15 +27,14 @@
                 <tr id="row_@item.CampaignId">
                     <td>
                         @Html.DisplayFor(modelItem => item.CampaignName)
+                      
+                    </td>
+                    
+                    <td>
+                     
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Enabled)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
+                        Running
                     </td>
 
                     <td>
@@ -142,7 +141,7 @@
                        
                         let ThirdRd = "<td> <div class='btn-group'><button class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"fas fa-cog\"></i></button>\<ul class=\"dropdown-menu\"><li><a data-toggle=\"modal\" onclick=\"OpenCampaignDetails(" + response.CampaignId + ")\" href=\"#\">Open</a></li><li><a href=\"#\">Copy</a></li><li><a href=\"#\" data - toggle=\"modal\" data - target=\"#confirmModal\" id = \"showConfirmDeleteBtn\" onclick = \"showConfirmDeleteCampaignModal(" + response.CampaignId + ")\" > Delete</a ></li ></ul> </div></td>"
 
-                        $('#CampaignTable').append("<tr><td>" + response.CampaignName + "</td><td>" + response.Enabled + "</td><td>" + StartDate.getDate() + ' ' + StartDate.getMonth() + ' ' + StartDate.getFullYear() + "</td><td>" + EndDate.getUTCDate() + "</td>" +  ThirdRd + "</tr>");
+                        $('#CampaignTable').append("<tr><td>" + response.CampaignName + "</td><td>" + response.Enabled + "</td><td>" + StartDate.getDate() + '-' + StartDate.getMonth() + '-' + StartDate.getFullYear() + "</td><td>" + EndDate.getUTCDate() + '-' + EndDate.getUTCMonth() + '-' + EndDate.getUTCFullYear() + "</td>" +  ThirdRd + "</tr>");
                     },
                     error: function (jqxhr, status, exception) {
                         alert('Exception:', exception);
