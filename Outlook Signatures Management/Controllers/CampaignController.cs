@@ -86,7 +86,7 @@ namespace Outlook_Signatures_Management.Controllers
                 {
                     campaign.CampaignName = model.CampaignName;
                     campaign.Content = model.Content;
-                    campaign.Enabled = model.Enabled;
+                    campaign.Disabled = model.Disabled;
                     campaign.EndDate = model.EndDate;
                     campaign.IsAlwaysActive = model.IsAlwaysActive;
                     campaign.SideNotes = model.SideNotes;

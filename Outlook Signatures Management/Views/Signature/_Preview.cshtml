@@ -1,0 +1,12 @@
+﻿@model Outlook_Signatures_Management.Models.Signature
+
+
+@Html.DropDownList("EmployeeId", ViewBag.EmployeeList as SelectList, "Select emplooyee", null)
+
+@Html.TextAreaFor(model => model.Body, new { @class = "form-control preview-body", id = "preview-body" })
+
+
+
+
+
+

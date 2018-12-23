@@ -1,6 +1,8 @@
 ﻿@model Outlook_Signatures_Management.Models.Campaign
 
 
+
+
 @using (Html.BeginForm("Edit", "Campaign", FormMethod.Post, new { id = "CampaignEditForm" }))
 {
     @Html.AntiForgeryToken()
@@ -35,11 +37,11 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Disabled, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.Enabled)
-                    @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Disabled)
+                    @Html.ValidationMessageFor(model => model.Disabled, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>

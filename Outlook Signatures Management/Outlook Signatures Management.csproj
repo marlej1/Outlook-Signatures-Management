@@ -183,11 +183,16 @@
     <Compile Include="Migrations\201812172023091_AddSignatureColumnsToEmployeeTable.Designer.cs">
       <DependentUpon>201812172023091_AddSignatureColumnsToEmployeeTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812212109421_EnabledToDisabledColummnInCampaignTable.cs" />
+    <Compile Include="Migrations\201812212109421_EnabledToDisabledColummnInCampaignTable.Designer.cs">
+      <DependentUpon>201812212109421_EnabledToDisabledColummnInCampaignTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Campaign.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\Signature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -588,6 +593,8 @@
     <Content Include="Views\Campaign\Index.cshtml" />
     <Content Include="Views\Campaign\_Create.cshtml" />
     <Content Include="Views\Campaign\_Edit.cshtml" />
+    <Content Include="Views\Signature\_Preview.cshtml" />
+    <Content Include="Views\Signature\_EditPreview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811282240586_init.resx">
@@ -610,6 +617,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812172023091_AddSignatureColumnsToEmployeeTable.resx">
       <DependentUpon>201812172023091_AddSignatureColumnsToEmployeeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812212109421_EnabledToDisabledColummnInCampaignTable.resx">
+      <DependentUpon>201812212109421_EnabledToDisabledColummnInCampaignTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

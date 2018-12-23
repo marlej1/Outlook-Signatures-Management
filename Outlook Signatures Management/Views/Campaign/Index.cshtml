@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Outlook_Signatures_Management.Models.Campaign>
+    @using Outlook_Signatures_Management.Models;
 
 @{
     ViewBag.Title = "Campaign Index";
@@ -27,14 +28,25 @@
                 <tr id="row_@item.CampaignId">
                     <td>
                         @Html.DisplayFor(modelItem => item.CampaignName)
-                      
+
                     </td>
-                    
+
+                    <td></td>
                     <td>
-                     
-                    </td>
-                    <td>
-                        Running
+                        @if (item.Disabled)
+                        {
+                            <i class="fas fa-circle" style="color:red"></i><span> &nbsp;Disabled</span>
+                        }
+                        else if (item.IsAlwaysActive || item.IsCurrentlyActive())
+                        {
+                            <i class="fas fa-circle" style="color:green"></i><span>&nbsp;Running</span>
+                        }else 
+                        {
+                           <i class="fas fa-circle" style="color:green"></i><span>&nbsp;Not running</span>
+
+                        }
+
+
                     </td>
 
                     <td>
@@ -76,6 +88,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Edit Campaign</h3>
+               
             </div>
             <div class="modal-body" id="EditCampaignModalBody">
 
@@ -133,15 +146,13 @@
                     url: "/Campaign/Create",
                     success: function (response) {
                         $("#AddCampaignModal").modal("hide");
-                        let date = parseInt(response.StartDate.substring(6, response.StartDate.length - 2));
-                        let StartDate = new Date(date); 
-                         date = parseInt(response.StartDate.substring(6, response.EndDate.length - 2));
-                        let EndDate = new Date(date); 
                         
-                       
-                        let ThirdRd = "<td> <div class='btn-group'><button class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"fas fa-cog\"></i></button>\<ul class=\"dropdown-menu\"><li><a data-toggle=\"modal\" onclick=\"OpenCampaignDetails(" + response.CampaignId + ")\" href=\"#\">Open</a></li><li><a href=\"#\">Copy</a></li><li><a href=\"#\" data - toggle=\"modal\" data - target=\"#confirmModal\" id = \"showConfirmDeleteBtn\" onclick = \"showConfirmDeleteCampaignModal(" + response.CampaignId + ")\" > Delete</a ></li ></ul> </div></td>"
 
-                        $('#CampaignTable').append("<tr><td>" + response.CampaignName + "</td><td>" + response.Enabled + "</td><td>" + StartDate.getDate() + '-' + StartDate.getMonth() + '-' + StartDate.getFullYear() + "</td><td>" + EndDate.getUTCDate() + '-' + EndDate.getUTCMonth() + '-' + EndDate.getUTCFullYear() + "</td>" +  ThirdRd + "</tr>");
+
+                        let ThirdRd = "<td> <div class='btn-group'><button class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"fas fa-cog\"></i></button>\<ul class=\"dropdown-menu\"><li><a data-toggle=\"modal\" onclick=\"OpenCampaignDetails(" + response.CampaignId + ")\" href=\"#\">Open</a></li><li><a href=\"#\">Copy</a></li><li><a href=\"#\" data - toggle=\"modal\" data - target=\"#confirmModal\" id = \"showConfirmDeleteBtn\" onclick = \"showConfirmDeleteCampaignModal(" + response.CampaignId + ")\" > Delete</a ></li ></ul> </div></td>";
+
+                        $('#CampaignTable').append("<tr><td>" + response.CampaignName  +"</td><td>"+ "</td><td>"+ '<p>Enabled</p>' + "</td>" + ThirdRd + "</tr>");
+                        alert("doddan row");
                     },
                     error: function (jqxhr, status, exception) {
                         alert('Exception:', exception);

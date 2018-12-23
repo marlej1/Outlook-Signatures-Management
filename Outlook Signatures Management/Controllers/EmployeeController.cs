@@ -94,8 +94,6 @@ namespace Outlook_Signatures_Management.Controllers
 
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
-            
-
                 try
                 {
                     empl = context.Employees.Find(employeeId);

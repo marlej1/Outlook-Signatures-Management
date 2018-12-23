@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -111,6 +112,63 @@ namespace Outlook_Signatures_Management.Controllers
                 context.SaveChanges();
 
 
+
+            }
+        }
+
+        public ActionResult Preview(int signatureId)
+        {
+            List<Employee> employees;
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                employees = context.Employees.ToList();
+                ViewBag.EmployeeList = new SelectList(employees, "EmployeeId", "DisplayName");
+
+                var signature = context.Signatures.Find(signatureId);
+                if (signature != null)
+                {
+                    return PartialView("_Preview", signature);
+                }
+                return HttpNotFound();
+
+            }
+        }
+
+        public ActionResult EditPreview(int signatureId, int employeeId)
+        {
+            Employee employee;
+            Signature signature;
+
+            List<Campaign> campaings;
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                string placeholderName = "{{FirstName}}";
+                string placeholderLastName = "{{LastName}}";
+                string placeholderCompany = "{{Company}}";
+                string placeholderEmailAddress = "{{Email}}";
+                campaings = context.Campaigns.ToList();
+                 signature = context.Signatures.Find(signatureId);
+                    employee = context.Employees.Find(employeeId);
+                
+               
+               string response =  signature.Body.Replace(placeholderName, employee.FirstName);
+                response = response.Replace(placeholderLastName, employee.LastName);
+                response =  response.Replace(placeholderCompany, employee.Company);
+                response =  response.Replace(placeholderEmailAddress, employee.Email);
+                StringBuilder sb = new StringBuilder(response);
+
+                foreach (var campaing in campaings)
+                {
+                    if (campaing.IsActive())
+                    {
+                        sb.Append("<br>");
+                        sb.Append(campaing.Content);
+                    }
+                 
+                }
+
+
+                return PartialView("_EditPreview", sb.ToString());
 
             }
         }

@@ -41,7 +41,7 @@
                     <td class="isForwardReplyCell">
                         @if (item.IsForwardReply)
                         {
-                        <p>Forward/Reply</p>
+                            <p>Forward/Reply</p>
                         }
                         else
                         { <h2></h2>}
@@ -86,7 +86,17 @@
     <div class="modal-dialog modal-ku" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Edit signature</h3>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3 text-center">
+                            <div class="btn-group" role="group">
+                                <button type="button" id="designBtn" class="btn btn-primary">Desing</button>
+                                <button type="button" id="PreviewBtn" class="btn btn-primary">Preview</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-body" id="EditSignatureModalBody">
 
@@ -123,6 +133,8 @@
 </div>
 
 
+
+
 @section Scripts {
 
     @Scripts.Render("~/bundles/jqueryval")
@@ -131,11 +143,12 @@
     <script>
 
         let editor = CKEDITOR.replace('Body');
-        let editSignatureEditor;
+        let editedSignatureId;
         // let editorEdit = CKEDITOR.replace('edit-body');
+        let idOfEditedSignature;
 
         let OpenSignatureDetails = function (signatureId) {
-
+            editedSignatureId = signatureId;
             $.ajax(
                 {
                     type: "GET",
@@ -204,7 +217,6 @@
 
         })
 
-
         $('#submitbtn').on('click', function () {
 
             var body = editor.getData();
@@ -243,20 +255,19 @@
                         if (response.IsDefault) {
                             isforwardreply = "<p>Forward/Reply</p>"
                         }
-                      
+
 
                         $('#SignaturesTable').append("<tr><td>" + response.SignatureName + "</td><td>" + isdefault + "</td>" + "</td><td>" + isforwardreply + "</td>" + ThirdRd + "</tr>");
 
-                      
 
-                      
+
+
                     }
                 }
             )
         })
 
         let hiddenSignatureId;
-
 
         let showConfirmDeleteSignatureModal = function (signatureId) {
             //  $('#SignatureIdInput').val(signatureId);
@@ -281,6 +292,89 @@
             })
         }
         )
+
+        let previewMode = false;
+        $('#designBtn').on('click', function (e) {
+            e.preventDefault();
+            if (previewMode) {
+                OpenSignatureDetails(editedSignatureId);
+                $('.modal-footer').show("slow");
+                previewMode = false;
+
+                
+            }
+
+        })
+
+        $('#PreviewBtn').on('click', function () {
+
+            let previewSignature;
+            if (!previewMode) {
+                previewMode = true;
+                $('.modal-footer').hide("slow");
+                $.ajax(
+                    {
+                        type: "GET",
+                        data: { signatureId: editedSignatureId },
+                        url: "/Signature/Preview",
+                        success: function (response) {
+                            $("#EditSignatureModalBody").html(response);
+
+                            $('#EmployeeId').change(function () {
+                                let employeeIdValue = $(this).val();
+                                let signatureId = editedSignatureId;
+
+                                $.ajax({
+
+                                    type: "GET",
+                                    data: {
+                                        employeeId: employeeIdValue,
+                                        signatureId: signatureId
+                                    },
+                                    url: "/Signature/EditPreview",
+                                    success: function (response) {
+                                        document.querySelector('#preview-body').innerHTML = response;
+                                        let instance = CKEDITOR.instances["preview-body"];
+                                        if (!instance) {
+                                            previewSignature = CKEDITOR.replace('preview-body', { removePlugins: 'toolbar' });
+
+                                        } else {
+                                            instance.destroy(true);
+                                            previewSignature = CKEDITOR.replace('preview-body', { removePlugins: 'toolbar' });
+                                        }
+
+                                        //  alert(document.querySelector('#preview-body').innerText);
+
+                                    },
+                                    error: function (jqxhr, status, exception) {
+                                        alert('Exception:' + exception + ',  ' + jqxhr.responseText);
+                                    }
+
+                                })
+
+                            })
+                            let instance = CKEDITOR.instances["preview-body"];
+                            if (!instance) {
+                                previewSignature = CKEDITOR.replace('preview-body', { removePlugins: 'toolbar' });
+
+                            } else {
+                                instance.destroy(true);
+                                previewSignature = CKEDITOR.replace('preview-body', { removePlugins: 'toolbar' });
+                            }
+
+                        },
+                        error: function (jqxhr, status, exception) {
+                            alert('Exception:', exception);
+                        }
+                    }
+                )
+            }
+
+        })
+
+
+
+
     </script>
 
 
