@@ -187,6 +187,22 @@
     <Compile Include="Migrations\201812212109421_EnabledToDisabledColummnInCampaignTable.Designer.cs">
       <DependentUpon>201812212109421_EnabledToDisabledColummnInCampaignTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812232351183_Validation.cs" />
+    <Compile Include="Migrations\201812232351183_Validation.Designer.cs">
+      <DependentUpon>201812232351183_Validation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812240011106_RemovePhoneNumerFromRequired.cs" />
+    <Compile Include="Migrations\201812240011106_RemovePhoneNumerFromRequired.Designer.cs">
+      <DependentUpon>201812240011106_RemovePhoneNumerFromRequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812251505333_test.cs" />
+    <Compile Include="Migrations\201812251505333_test.Designer.cs">
+      <DependentUpon>201812251505333_test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812251514243_RequiredColumnsInSignatureAndCampaignTables.cs" />
+    <Compile Include="Migrations\201812251514243_RequiredColumnsInSignatureAndCampaignTables.Designer.cs">
+      <DependentUpon>201812251514243_RequiredColumnsInSignatureAndCampaignTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Campaign.cs" />
@@ -595,6 +611,8 @@
     <Content Include="Views\Campaign\_Edit.cshtml" />
     <Content Include="Views\Signature\_Preview.cshtml" />
     <Content Include="Views\Signature\_EditPreview.cshtml" />
+    <Content Include="Views\Signature\_PreviewCreate.cshtml" />
+    <Content Include="Views\Signature\_CustomPreviewCreate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811282240586_init.resx">
@@ -620,6 +638,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812212109421_EnabledToDisabledColummnInCampaignTable.resx">
       <DependentUpon>201812212109421_EnabledToDisabledColummnInCampaignTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812232351183_Validation.resx">
+      <DependentUpon>201812232351183_Validation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812240011106_RemovePhoneNumerFromRequired.resx">
+      <DependentUpon>201812240011106_RemovePhoneNumerFromRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812251505333_test.resx">
+      <DependentUpon>201812251505333_test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812251514243_RequiredColumnsInSignatureAndCampaignTables.resx">
+      <DependentUpon>201812251514243_RequiredColumnsInSignatureAndCampaignTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

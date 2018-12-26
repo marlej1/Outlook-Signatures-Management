@@ -73,10 +73,36 @@
     <div class="modal-dialog modal-ku" role="document">
         <div class="modal-content">
             <div class="modal-header">
+
                 <h3>Create new signature</h3>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3 text-center">
+                            <div class="btn-group" role="group">
+                                <button type="button" id="designBtnCreate" class="btn btn-primary">Desing</button>
+                                <button type="button" id="PreviewBtnCreate" class="btn btn-primary">Preview</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-body" id="CreateSignatureModalBody">
+                @Html.Action("Create")
+            </div>
+            <div class="modal-footer" id="modal-footer-create">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input type="reset" value="Save Changes" id="submitbtn" class="btn btn-primary" />
+                <button id="InsertText" class="btn btn-default">Click Here to Insert</button>
+
             </div>
 
-            @Html.Action("Create")
+
+
+        </div>
+
+
 
         </div>
     </div>
@@ -101,7 +127,7 @@
             <div class="modal-body" id="EditSignatureModalBody">
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" id="modal-footer-edit">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <input type="reset" value="Save Changes" id="SaveChangesbtn" class="btn btn-primary" />
             </div>
@@ -164,6 +190,11 @@
                             editSignatureEditor = CKEDITOR.replace('edit-body');
 
                         }
+                        $("#EmployeeFieldsEdit").change(function () {
+                            CKEDITOR.instances["edit-body"].insertHtml($("#EmployeeFieldsEdit").val());
+                        });
+                        
+                                                        
                         $("#EditSignatureModal").modal("show");
 
 
@@ -173,9 +204,19 @@
 
         }
 
+        $("#EmployeeFieldsCreate").change(function () {
+            CKEDITOR.instances["Body"].insertHtml($("#EmployeeFieldsCreate").val());
+        });
+      
+
         $('#SaveChangesbtn').on('click', function () {
             let body = editSignatureEditor.getData();
             var formData = $('#SignatureEditForm').serializeArray();
+
+            if (!$('#SignatureEditForm').valid()) {
+                return false;
+            }
+
 
             //below conditionals checks if there duplicate entries in form data
 
@@ -217,10 +258,18 @@
 
         })
 
+       
+
+       
+
         $('#submitbtn').on('click', function () {
 
             var body = editor.getData();
             var formData = $('#SignatureCreateForm').serializeArray();
+
+            if (!$('#SignatureCreateForm').valid()) {
+                return false;
+            }
 
             //below conditionals check if there duplicate entries in form data
 
@@ -293,25 +342,145 @@
         }
         )
 
+      
+
         let previewMode = false;
         $('#designBtn').on('click', function (e) {
+           
             e.preventDefault();
             if (previewMode) {
                 OpenSignatureDetails(editedSignatureId);
-                $('.modal-footer').show("slow");
+                $('#modal-footer-edit').show("slow");
                 previewMode = false;
 
-                
+
             }
 
         })
+
+        $('#designBtnCreate').on('click', function (e) {
+
+            e.preventDefault();
+            if (previewModeCreate) {
+                $('#modal-footer-create').show("slow");
+                //$("#CreateSignatureModalBody").load("/Signature/CreatePreview");
+                previewModeCreate = false;
+
+                $.ajax(
+                    {
+
+                        type: "GET",
+                        url: "/Signature/Create",
+                        success: function (response) {
+                            $("#CreateSignatureModalBody").html(response);
+                            let instance = CKEDITOR.instances["Body"];
+                            if (!instance) {
+                                editor = CKEDITOR.replace('Body');
+                            } else {
+                                instance.destroy(true);
+                                editor = CKEDITOR.replace('Body');
+
+                            }
+
+                            
+                            
+
+                            $("#EmployeeFieldsCreate").change(function () {
+                                CKEDITOR.instances["Body"].insertHtml($("#EmployeeFieldsCreate").val());
+                            });
+                            editor.setData(EditorBody);
+
+
+                        },
+                        error: function (jqxhr, status, exception) {
+                            alert('Exception:' + exception + ',  ' + jqxhr.responseText);
+                        }
+
+                    })
+            }
+        })
+
+            
+
+       
+
+        let previewModeCreate = false;
+        
+        let EditorBody = '';
+        $('#PreviewBtnCreate').on('click', function () {
+            let previewSignature;
+            ;
+            if (!previewModeCreate) {
+                previewModeCreate = true;
+                $('#modal-footer-create').hide("slow");
+                debugger
+                EditorBody = editor.getData();
+            }
+            $.ajax(
+                {
+                    
+                    type: "GET",
+                    data: { bodyContent: EditorBody},
+                    url: "/Signature/CreatePreview",
+                    success: function (response) {
+                        $("#CreateSignatureModalBody").html(response);
+
+                        $('#employeeId-create').change(function () {
+                            let employeeIdValue = $(this).val();
+                            
+
+                            $.ajax({
+
+                                type: "GET",
+                                data: {
+                                    employeeId: employeeIdValue,
+                                    bodyContent: EditorBody
+                                },
+                                url: "/Signature/CustomCreatePreview",
+                                success: function (response) {
+                                    document.querySelector('#preview-body-create').innerHTML = response;
+                                   
+                                    let instance = CKEDITOR.instances["preview-body-create"];
+                                    if (!instance) {
+                                        previewSignature = CKEDITOR.replace('preview-body-create', { removePlugins: 'toolbar' });
+
+                                    } else {
+                                        instance.destroy(true);
+                                        previewSignature = CKEDITOR.replace('preview-body-create', { removePlugins: 'toolbar' });
+                                    }
+
+                                    //  alert(document.querySelector('#preview-body').innerText);
+
+                                },
+                                error: function (jqxhr, status, exception) {
+                                    alert('Exception:' + exception + ',  ' + jqxhr.responseText);
+                                }
+
+                            })
+
+                        })
+
+                        let instance = CKEDITOR.instances["preview-body-create"];
+                        if (!instance) {
+                            previewSignature = CKEDITOR.replace('preview-body-create', { removePlugins: 'toolbar' });
+
+                        } else {
+                            instance.destroy(true);
+                            previewSignature = CKEDITOR.replace('preview-body-create', { removePlugins: 'toolbar' });
+                        }
+                    },
+                    error: function (jqxhr, status, exception) {
+                        alert('Exception:' + exception + ',  ' + jqxhr.responseText);
+                    }
+                })
+        });
 
         $('#PreviewBtn').on('click', function () {
 
             let previewSignature;
             if (!previewMode) {
                 previewMode = true;
-                $('.modal-footer').hide("slow");
+                $('#modal-footer-edit').hide("slow");
                 $.ajax(
                     {
                         type: "GET",
@@ -371,12 +540,57 @@
             }
 
         })
+       
 
 
+        //function insertAtCaret(areaId, text) {
+        //    var txtarea = document.getElementById(areaId);
+        //    if (!txtarea) {
+        //        return;
+        //    }
 
+            
 
+        //    var scrollPos = txtarea.scrollTop;
+        //    var strPos = 0;
+        //    var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
+        //        "ff" : (document.selection ? "ie" : false));
+        //    if (br == "ie") {
+        //        txtarea.focus();
+        //        var range = document.selection.createRange();
+        //        range.moveStart('character', -txtarea.value.length);
+        //        strPos = range.text.length;
+        //    } else if (br == "ff") {
+        //        strPos = txtarea.selectionStart;
+        //    }
+
+        //    var front = (txtarea.value).substring(0, strPos);
+        //    var back = (txtarea.value).substring(strPos, txtarea.value.length);
+        //    txtarea.value = front + text + back;
+        //    strPos = strPos + text.length;
+        //    if (br == "ie") {
+        //        txtarea.focus();
+        //        var ieRange = document.selection.createRange();
+        //        ieRange.moveStart('character', -txtarea.value.length);
+        //        ieRange.moveStart('character', strPos);
+        //        ieRange.moveEnd('character', 0);
+        //        ieRange.select();
+        //    } else if (br == "ff") {
+        //        txtarea.selectionStart = strPos;
+        //        txtarea.selectionEnd = strPos;
+        //        txtarea.focus();
+        //    }
+
+        //    txtarea.scrollTop = scrollPos;
+        //}
+
+        
     </script>
 
 
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 }
+
 

@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Outlook_Signatures_Management.Models.Campaign>
-    @using Outlook_Signatures_Management.Models;
+@using Outlook_Signatures_Management.Models;
 
 @{
     ViewBag.Title = "Campaign Index";
@@ -40,9 +40,10 @@
                         else if (item.IsAlwaysActive || item.IsCurrentlyActive())
                         {
                             <i class="fas fa-circle" style="color:green"></i><span>&nbsp;Running</span>
-                        }else 
+                        }
+                        else
                         {
-                           <i class="fas fa-circle" style="color:green"></i><span>&nbsp;Not running</span>
+                            <i class="fas fa-circle" style="color:red"></i><span>&nbsp;Not running</span>
 
                         }
 
@@ -88,7 +89,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Edit Campaign</h3>
-               
+
             </div>
             <div class="modal-body" id="EditCampaignModalBody">
 
@@ -138,6 +139,10 @@
 
             let content = editor.getData();
             let formData = $('#CampaignCreateForm').serializeArray();
+            if (!$('#CampaignCreateForm').valid()) {
+                return false;
+            }
+
             formData[2].value = content;
             $.ajax(
                 {
@@ -146,13 +151,24 @@
                     url: "/Campaign/Create",
                     success: function (response) {
                         $("#AddCampaignModal").modal("hide");
-                        
+
+                        let secondTd = '';
+                        if (response.Disabled) {
+                            secondTd = '<i class="fas fa-circle" style="color:red"></i> <span> &nbsp;Disabled</span>';
+                        }
+                        else if (response.IsAlwaysActive) {
+                            secondTd = '<i class="fas fa-circle" style="color:green"></i> <span>&nbsp;Running</span>';
+                        }
+                        else {
+                            secondTd = '<i class="fas fa-circle" style="color:red"></i><span>&nbsp;Not running</span>';
+                        }
+
 
 
                         let ThirdRd = "<td> <div class='btn-group'><button class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"fas fa-cog\"></i></button>\<ul class=\"dropdown-menu\"><li><a data-toggle=\"modal\" onclick=\"OpenCampaignDetails(" + response.CampaignId + ")\" href=\"#\">Open</a></li><li><a href=\"#\">Copy</a></li><li><a href=\"#\" data - toggle=\"modal\" data - target=\"#confirmModal\" id = \"showConfirmDeleteBtn\" onclick = \"showConfirmDeleteCampaignModal(" + response.CampaignId + ")\" > Delete</a ></li ></ul> </div></td>";
 
-                        $('#CampaignTable').append("<tr><td>" + response.CampaignName  +"</td><td>"+ "</td><td>"+ '<p>Enabled</p>' + "</td>" + ThirdRd + "</tr>");
-                        alert("doddan row");
+                        $('#CampaignTable').append("<tr><td>" + response.CampaignName + "</td><td>" + "</td><td>" + secondTd + "</td>" + ThirdRd + "</tr>");
+                        
                     },
                     error: function (jqxhr, status, exception) {
                         alert('Exception:', exception);
@@ -193,6 +209,11 @@
         $('#SaveChangesbtn').on('click', function () {
             let body = editCampaignEditor.getData();
             let formData = $('#CampaignEditForm').serializeArray();
+
+            if (!$('#CampaignEditForm').valid()) {
+                return false;
+            }
+
             formData[3].value = body;
             $.ajax(
                 {
@@ -202,6 +223,18 @@
                     success: function (response) {
                         $("#EditCampaignModal").modal("hide");
                         $("#row_" + response.CampaignId + " td:nth-child(1)").html(response.CampaignName);
+
+                        let secondTd = '';
+                        if (response.Disabled) {
+                            secondTd = '<i class="fas fa-circle" style="color:red"></i> <span> &nbsp;Disabled</span>';
+                        }
+                        else if (response.IsAlwaysActive) {
+                            secondTd = '<i class="fas fa-circle" style="color:green"></i> <span>&nbsp;Running</span>';
+                        }
+                        else {
+                            secondTd = '<i class="fas fa-circle" style="color:red"></i><span>&nbsp;Not running</span>';
+                        }
+                        $("#row_" + response.CampaignId + " td:nth-child(3)").html(secondTd);
                     }
                 }
             )
@@ -234,5 +267,7 @@
         )
 
     </script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -31,9 +32,10 @@ namespace Outlook_Signatures_Management.Controllers
         }
 
         // GET: Signtature/Create
-        [ChildActionOnly]
         public ActionResult Create()
         {
+         
+
             return PartialView("_Create");
         }
 
@@ -134,6 +136,25 @@ namespace Outlook_Signatures_Management.Controllers
             }
         }
 
+
+        [ValidateInput(false)]
+        public ActionResult CreatePreview(string bodyContent)
+        {
+            List<Employee> employees;
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                employees = context.Employees.ToList();
+                ViewBag.EmployeeList = new SelectList(employees, "EmployeeId", "DisplayName");
+
+              
+                
+                    return PartialView("_PreviewCreate", bodyContent);
+                
+               
+
+            }
+        }
+
         public ActionResult EditPreview(int signatureId, int employeeId)
         {
             Employee employee;
@@ -172,13 +193,66 @@ namespace Outlook_Signatures_Management.Controllers
 
             }
         }
+        [ValidateInput(false)]
+        public ActionResult CustomCreatePreview(int employeeId, string bodyContent)
+        {
+            Employee employee;
+            
+
+            List<Campaign> campaings;
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                string placeholderName = "{{FirstName}}";
+                string placeholderLastName = "{{LastName}}";
+                string placeholderCompany = "{{Company}}";
+                string placeholderEmailAddress = "{{Email}}";
+                campaings = context.Campaigns.ToList();
+               
+                employee = context.Employees.Find(employeeId);
+
+
+                string response = bodyContent.Replace(placeholderName, employee.FirstName);
+                response = response.Replace(placeholderLastName, employee.LastName);
+                response = response.Replace(placeholderCompany, employee.Company);
+                response = response.Replace(placeholderEmailAddress, employee.Email);
+                StringBuilder sb = new StringBuilder(response);
+
+                foreach (var campaing in campaings)
+                {
+                    if (campaing.IsActive())
+                    {
+                        sb.Append("<br>");
+                        sb.Append(campaing.Content);
+                    }
+
+                }
+
+
+                return PartialView("_CustomPreviewCreate", sb.ToString());
+
+            }
+        }
 
         // GET: Signtature/Edit/5
         public ActionResult Edit(int signatureId)
         {
+            Type t = typeof(Employee);
+            PropertyInfo[] propInfos = t.GetProperties();
+            var propertyNames = propInfos.Select(pi => pi.PropertyType);
+
+
+            var selectList = new SelectList(propInfos.ToList(), "Name", "Name");
+            ViewBag.EmployeesField = selectList;
+
+
+
+
+
+
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
                 var signature = context.Signatures.Find(signatureId);
+              
                 if (signature != null)
                 {
                     return PartialView("_Edit", signature);

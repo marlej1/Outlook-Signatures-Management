@@ -1,0 +1,16 @@
+﻿
+
+@model String
+
+
+@Html.DropDownList("employeeId-create", ViewBag.EmployeeList as SelectList, "Select emplooyee", null)
+
+
+@{
+    string areaBody = Model.ToString();
+}
+
+
+<textarea class = "form-control preview-body" id = "preview-body-create">
+@areaBody
+</textarea>

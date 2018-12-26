@@ -55,30 +55,40 @@ namespace Outlook_Signatures_Management.Controllers
         {
 
             model.DateAdded = DateTime.Now;
-            using (ApplicationDbContext context = new ApplicationDbContext())
+            if (ModelState.IsValid)
+               
             {
-                try
+                using (ApplicationDbContext context = new ApplicationDbContext())
                 {
-                    if (model.DefaultSignatureId != null)
+                    try
                     {
-                        model.HasIndividualDefaultSignature = true;
-                    }
-                    if (model.ForwardReplySignatureId != null)
-                    {
-                        model.HasIndividualForwardReplySignature = true;
-                    }
+                        if (model.DefaultSignatureId != null)
+                        {
+                            model.HasIndividualDefaultSignature = true;
+                        }
+                        if (model.ForwardReplySignatureId != null)
+                        {
+                            model.HasIndividualForwardReplySignature = true;
+                        }
 
-                    context.Employees.Add(model);
-                   context.SaveChanges();
-                    // TODO: Add insert logic here
-                    
-                    return Json(model);
+                        context.Employees.Add(model);
+                        context.SaveChanges();
+                        // TODO: Add insert logic here
+
+                        return Json(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        return Content(ex.Message);
+                    }
                 }
-                catch(Exception ex)
-                {
-                    return Content(ex.Message);
-                }
-            } 
+            }
+            else
+            {
+                return Json(model);
+            }
+            
+          
 
           
         }

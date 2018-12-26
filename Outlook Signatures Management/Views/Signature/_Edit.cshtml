@@ -1,6 +1,14 @@
 ﻿@model Outlook_Signatures_Management.Models.Signature
 
+<p>@ViewBag.ee</p>
 
+<select id="EmployeeFieldsEdit">
+    <option value="">--Select Field--</option>
+    <option value="{{FirstName}}">First Name</option>
+    <option value="{{LastName}}">Last Name</option>
+    <option value="{{Company}}">Company</option>
+    <option value="{{Email}}">Email Address</option>
+</select>
 
 @using (Html.BeginForm("Edit", "Signature", FormMethod.Post, new { id = "SignatureEditForm" }))
 {
@@ -70,15 +78,18 @@
 @section Scripts {
 
 
+
+
     <script src="~/Scripts/ckeditor/ckeditor.js"></script>
 
     <script>
 
-       // let editor1 = CKEDITOR.replace('Body');
-      //  alert("from ajax")
-        // let editorEdit = CKEDITOR.replace('edit-body');
 
-        </script>
+                               // let editor1 = CKEDITOR.replace('Body');
+                              //  alert("from ajax")
+                                // let editorEdit = CKEDITOR.replace('edit-body');
+
+    </script>
 
 }
 
