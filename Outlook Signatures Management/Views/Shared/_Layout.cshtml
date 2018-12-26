@@ -22,14 +22,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("MY Signature Tool", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("My Signature Tool", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Signatures", "Index", "Signature")</li>
-                    <li>@Html.ActionLink("Employees", "Create", "Employee")</li>
-                    <li>@Html.ActionLink("Campaigns", "Index", "Campaign")</li>
+
+
+
+                    <li><a href="\Signature\Index"><i class="fas fa-signature"></i><span> &nbsp;Signatures</span></a> </li>
+                    <li><a href="\Employee\Create"><i class="fas fa-users"></i><span> &nbsp;Employees</span></a> </li>
+                    <li><a href="\Campaign\Index"><i class="fas fa-chart-line"></i><span> &nbsp;Campaigns</span></a> </li>
+
+
+
+                   
                 </ul>
             </div>
 
