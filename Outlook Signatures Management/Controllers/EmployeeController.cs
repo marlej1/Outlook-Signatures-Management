@@ -224,7 +224,7 @@ namespace Outlook_Signatures_Management.Controllers
                     if (employee != null)
                     {
                         context.Employees.Remove(employee);
-                       // context.SaveChanges();
+                       context.SaveChanges();
                         return Json(employee, JsonRequestBehavior.AllowGet);
 
                     }
